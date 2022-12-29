@@ -1,0 +1,7 @@
+{
+	"db":"readysell_db",
+	"cloudinary_name":"readysell_cloudinary_name",
+	"cloudinary_api_key":"readysell_cloudinary_api_key",
+	"cloudinary_api_secret":"readysell_cloudinary_api_secret",
+	"assetsBaseUrl":"readysell_assetsBaseUrl"
+}
