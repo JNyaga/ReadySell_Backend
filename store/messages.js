@@ -54,7 +54,7 @@ const Message = mongoose.model('Message', messageSchema)
 const getMessagesForUser = async (toUserId) => {
   const messages = await Message.find({ toUserId: toUserId })
     .lean()
-    .sort({ dateTime: -1 })
+    .sort({ dateTime: 1 })
   // messages.filter(message => message.toUserId === toUserId);
   if (!messages) return
   return messages
@@ -85,7 +85,6 @@ const add = async (message) => {
   const newMessage = new Message(message)
 
   const result = newMessage.save()
-  console.log(result)
   // message.id = messages.length + 1;
   // message.dateTime = Date.now();
   // messages.push(message);
