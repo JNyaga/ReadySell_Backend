@@ -15,20 +15,30 @@ const mongoose = require("mongoose")
 const cloudinary = require('cloudinary').v2;
 const app = express();
 
+const port = process.env.PORT || config.get("port");
 
 mongoose.set('strictQuery', false);
 // console.log(config.get('db'))
 console.log(config.get("assetsBaseUrl"))
-mongoose.connect(config.get('db'))
-  .then(() => console.log("Connected to readysell mongodb"))
-  .catch(() => console.error("Could not connect to readysell"))
+
+
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(config.get('db'))
+    console.log(`Connected to readysell mongodb :${conn.connection.host}`)
+
+  } catch (error) {
+    console.error(`Could not connect to readysell ${error}`)
+    process.exit(1)
+  }
+}
+
 
 cloudinary.config({
   cloud_name: config.get('cloudinary_name'),
   api_key: config.get('cloudinary_api_key'),
   api_secret: config.get('cloudinary_api_secret')
 });
-
 
 
 app.use(express.static("public"));
@@ -46,7 +56,11 @@ app.use("/api/my", my);
 app.use("/api/expoPushTokens", expoPushTokens);
 app.use("/api/messages", messages);
 
-const port = process.env.PORT || config.get("port");
-app.listen(port, function () {
-  console.log(`Server started on port ${port}...`);
-});
+
+//Connect to the database before listening
+connectDB().then(() => {
+  app.listen(port, () => {
+    console.log(`Server started on port ${port}...`);
+  });
+
+})
