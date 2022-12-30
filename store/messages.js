@@ -1,25 +1,25 @@
 
-const mongoose= require("mongoose");
+const mongoose = require("mongoose");
 
-const messageSchema= new mongoose.Schema({
-  fromUserId:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:'User'
+const messageSchema = new mongoose.Schema({
+  fromUserId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
-  toUserId:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:'User'
+  toUserId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   content: String,
-  listingId:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:'Listing'
+  listingId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Listing'
   },
-  dateTime:{ type: Date, default: Date.now }
+  dateTime: { type: Date, default: Date.now }
 
 })
 
-const Message= mongoose.model('Message', messageSchema)
+const Message = mongoose.model('Message', messageSchema)
 // const messages = [
 //   {
 //     fromUserId: "63a1f980bcfb6ba76932946c",
@@ -51,39 +51,40 @@ const Message= mongoose.model('Message', messageSchema)
 
 // createMessages();
 
-const getMessagesForUser = async (toUserId) =>{
-  const messages= await Message.find({toUserId:toUserId}).lean()
+const getMessagesForUser = async (toUserId) => {
+  const messages = await Message.find({ toUserId: toUserId })
+    .lean()
+    .sort({ dateTime: -1 })
   // messages.filter(message => message.toUserId === toUserId);
   if (!messages) return
   return messages
 }
-const getMessagesForUserandPopulate= async(toUserId)=>{
-  const messages =  await Message.find({toUserId:toUserId})
-  .lean()
-  .populate('toUserId', "_id name image")
-  .populate('fromUserId', "_id name image")
-  
+const getMessagesForUserandPopulate = async (toUserId) => {
+  const messages = await Message.find({ toUserId: toUserId })
+    .lean()
+    .populate('toUserId', "_id name image")
+    .populate('fromUserId', "_id name image")
+
 
   if (!messages) return
   return messages
 }
 
-const getMessageByIdandPopulate = async(id) => {
+const getMessageByIdandPopulate = async (id) => {
 
-  const message= await Message.findById(id)
-  .lean()
-  .populate('fromUserId', "_id name expoPushToken")
-  if(!message) return
-  console.log(message)
+  const message = await Message.findById(id)
+    .lean()
+    .populate('fromUserId', "_id name expoPushToken")
+  if (!message) return
   return message
   // listings.find((listing) => listing.id === id);
 }
 
 // getMessageByIdandPopulate("63a264a8a4e3bfdae0b9a9b6")
 const add = async (message) => {
-  const newMessage= new Message(message)
+  const newMessage = new Message(message)
 
-  const result= newMessage.save()
+  const result = newMessage.save()
   console.log(result)
   // message.id = messages.length + 1;
   // message.dateTime = Date.now();
@@ -91,20 +92,20 @@ const add = async (message) => {
 };
 
 
-const removeMessage= async(id)=>{
-  const message= await Message.findByIdAndRemove(id)
-  if(!message) return null
+const removeMessage = async (id) => {
+  const message = await Message.findByIdAndRemove(id)
+  if (!message) return null
 
   return message
 }
 
 // removeMessage("63aa9f3b40ad442914077c81")
 
-module.exports = { 
-add, 
-getMessagesForUser,
-getMessageByIdandPopulate, 
-getMessagesForUserandPopulate,
-removeMessage,
+module.exports = {
+  add,
+  getMessagesForUser,
+  getMessageByIdandPopulate,
+  getMessagesForUserandPopulate,
+  removeMessage,
 
 };
