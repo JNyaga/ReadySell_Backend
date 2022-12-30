@@ -64,6 +64,7 @@ const getMessagesForUserandPopulate = async (toUserId) => {
     .lean()
     .populate('toUserId', "_id name image")
     .populate('fromUserId', "_id name image")
+    .sort({ dateTime: 1 })
 
 
   if (!messages) return
