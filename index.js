@@ -11,22 +11,22 @@ const expoPushTokens = require("./routes/expoPushTokens");
 const helmet = require("helmet");
 const compression = require("compression");
 const config = require("config");
-const mongoose= require("mongoose")
+const mongoose = require("mongoose")
 const cloudinary = require('cloudinary').v2;
 const app = express();
 
 
 mongoose.set('strictQuery', false);
-console.log(config.get('db'))
+// console.log(config.get('db'))
 console.log(config.get("assetsBaseUrl"))
 mongoose.connect(config.get('db'))
-  .then(()=> console.log("Connected to readysell mongodb"))
-  .catch(()=> console.error("Could not connect to readysell"))
+  .then(() => console.log("Connected to readysell mongodb"))
+  .catch(() => console.error("Could not connect to readysell"))
 
 cloudinary.config({
-  cloud_name:config.get('cloudinary_name'),
-  api_key:config.get('cloudinary_api_key'),
-  api_secret:config.get('cloudinary_api_secret')
+  cloud_name: config.get('cloudinary_name'),
+  api_key: config.get('cloudinary_api_key'),
+  api_secret: config.get('cloudinary_api_secret')
 });
 
 
@@ -47,6 +47,6 @@ app.use("/api/expoPushTokens", expoPushTokens);
 app.use("/api/messages", messages);
 
 const port = process.env.PORT || config.get("port");
-app.listen(port, function() {
+app.listen(port, function () {
   console.log(`Server started on port ${port}...`);
 });
