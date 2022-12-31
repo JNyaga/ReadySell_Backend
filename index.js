@@ -14,8 +14,31 @@ const config = require("config");
 const mongoose = require("mongoose")
 const cloudinary = require('cloudinary').v2;
 const app = express();
+const fs = require('fs');
+
 
 const port = process.env.PORT || config.get("port");
+
+fs.stat('/tmp', (err, stats) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  if (stats.mode & fs.constants.S_IRUSR) {
+    console.log('The /tmp folder is readable by the owner.');
+  }
+
+  if (stats.mode & fs.constants.S_IWUSR) {
+    console.log('The /tmp folder is writable by the owner.');
+  }
+
+  if (stats.mode & fs.constants.S_IXUSR) {
+    console.log('The /tmp folder is executable by the owner.');
+  }
+
+  console.log(stats.mode);
+});
 
 mongoose.set('strictQuery', false);
 // console.log(config.get('db'))
