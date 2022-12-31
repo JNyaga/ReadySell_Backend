@@ -21,6 +21,26 @@ const port = process.env.PORT || config.get("port");
 
 const currentDirectory = process.cwd();
 console.log(currentDirectory);
+fs.stat(currentDirectory, (err, stats) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  if (stats.mode & fs.constants.S_IRUSR) {
+    console.log('The /tmp folder is readable by the owner.');
+  }
+
+  if (stats.mode & fs.constants.S_IWUSR) {
+    console.log('The /tmp folder is writable by the owner.');
+  }
+
+  if (stats.mode & fs.constants.S_IXUSR) {
+    console.log('The /tmp folder is executable by the owner.');
+  }
+
+  console.log(stats.mode);
+});
 
 mongoose.set('strictQuery', false);
 // console.log(config.get('db'))
