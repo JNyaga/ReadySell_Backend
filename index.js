@@ -21,7 +21,7 @@ const path = require('path')
 
 const port = process.env.PORT || config.get("port");
 
-fs.readdir('/tmp', async (err, files) => {
+fs.readdir('/tmp/', async (err, files) => {
   if (err) {
     console.error(err);
   } else {

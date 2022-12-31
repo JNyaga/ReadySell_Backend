@@ -11,7 +11,7 @@ const userImageResize = require("../middleware/userImageResize");
 
 
 const upload = multer({
-  dest: "uploads/",
+  dest: "/tmp/",
   limits: { fieldSize: 25 * 1024 * 1024 },
 });
 
@@ -22,7 +22,7 @@ router.get("/:id", auth, async (req, res) => {
   // const  {expoPushToken}  = user
   // console.log(expoPushToken)
   const user = userMapper(response);
-  const listings =await listingsStore.filterListings({userId : userId});
+  const listings = await listingsStore.filterListings({ userId: userId });
 
   res.send({
     id: user._id,
@@ -34,20 +34,20 @@ router.get("/:id", auth, async (req, res) => {
 });
 
 
-router.put("/image", 
+router.put("/image",
   [
-  auth,
-  upload.single("image"),
-  userImageResize,
-  ], 
-async(req, res)=>{
-  const user = await usersStore.updateUserImage(
-    req.user.userId, req.image)
-  if (!user)  return res.status(400).send({ error: "Failed to update" })
+    auth,
+    upload.single("image"),
+    userImageResize,
+  ],
+  async (req, res) => {
+    const user = await usersStore.updateUserImage(
+      req.user.userId, req.image)
+    if (!user) return res.status(400).send({ error: "Failed to update" })
 
-  res.status(201).send("Image changed");
+    res.status(201).send("Image changed");
 
-}
+  }
 );
 
 module.exports = router;
