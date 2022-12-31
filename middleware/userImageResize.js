@@ -2,8 +2,6 @@ const sharp = require("sharp");
 const path = require("path");
 const fs = require("fs");
 const cloudinary = require('cloudinary').v2;
-const fs = require('fs');
-const path = require('path')
 
 
 const outputFolder = "/tmp/";
