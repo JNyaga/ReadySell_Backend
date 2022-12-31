@@ -19,7 +19,16 @@ const fs = require('fs');
 
 const port = process.env.PORT || config.get("port");
 
-
+fs.readdir('/tmp', async (err, files) => {
+  if (err) {
+    console.error(err);
+  } else {
+    for (const file of files) {
+      console.log(path.parse(file).name);
+    }
+  }
+}
+);
 
 mongoose.set('strictQuery', false);
 // console.log(config.get('db'))
