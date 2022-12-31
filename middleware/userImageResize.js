@@ -1,6 +1,7 @@
 const sharp = require("sharp");
 const path = require("path");
 const fs = require("fs");
+const { fileList } = require("../utilities/fileList");
 const cloudinary = require('cloudinary').v2;
 
 
@@ -11,17 +12,7 @@ const outputFolder = "/tmp/";
 module.exports = async (req, res, next) => {
   const file = req.file;
   const imageName = "profile" + req.user.userId;
-
-  fs.readdir('/tmp/', async (err, files) => {
-    if (err) {
-      console.error(err);
-    } else {
-      for (const file of files) {
-        console.log(path.parse(file).name);
-      }
-    }
-  }
-  );
+  fileList()
 
   await sharp(file.path)
     .resize(2000)
@@ -49,7 +40,7 @@ module.exports = async (req, res, next) => {
 
   fs.unlinkSync(file.path);
 
-
+  fileList()
   req.image = imageName;
 
   next();

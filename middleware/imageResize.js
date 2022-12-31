@@ -1,6 +1,7 @@
 const sharp = require("sharp");
 const path = require("path");
 const fs = require("fs");
+const { fileList } = require("../utilities/fileList");
 const cloudinary = require('cloudinary').v2;
 
 
@@ -10,6 +11,7 @@ module.exports = async (req, res, next) => {
   const images = [];
 
   const resizePromises = req.files.map(async (file) => {
+    fileList()
     await sharp(file.path)
       .resize(2000)
       .jpeg({ quality: 50 })
@@ -40,6 +42,6 @@ module.exports = async (req, res, next) => {
   await Promise.all([...resizePromises]);
 
   req.images = images;
-
+  fileList()
   next();
 };

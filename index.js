@@ -15,7 +15,8 @@ const mongoose = require("mongoose")
 const cloudinary = require('cloudinary').v2;
 const app = express();
 const fs = require('fs');
-const path = require('path')
+const path = require('path');
+const { fileList } = require("./utilities/fileList");
 
 
 
@@ -27,6 +28,7 @@ mongoose.set('strictQuery', false);
 // console.log(config.get('db'))
 console.log(config.get("assetsBaseUrl"))
 
+fileList()
 
 const connectDB = async () => {
   try {
