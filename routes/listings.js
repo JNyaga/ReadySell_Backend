@@ -16,7 +16,7 @@ const currentDirectory = process.cwd();
 console.log(currentDirectory);
 
 const upload = multer({
-  dest: currentDirectory,      //"uploads/",
+  dest: '/tmp/',      //"uploads/",
   limits: { fieldSize: 25 * 1024 * 1024 },
 });
 
