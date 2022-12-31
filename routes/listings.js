@@ -12,8 +12,11 @@ const delay = require("../middleware/delay");
 const listingMapper = require("../mappers/listings");
 const config = require("config");
 
+const currentDirectory = process.cwd();
+console.log(currentDirectory);
+
 const upload = multer({
-  dest: "uploads/",
+  dest: currentDirectory,      //"uploads/",
   limits: { fieldSize: 25 * 1024 * 1024 },
 });
 
@@ -33,7 +36,7 @@ const validateCategoryId = (req, res, next) => {
     return res.status(400).send({ error: "Invalid categoryId." });
 
   next();
-}; 
+};
 
 router.get("/", async (req, res) => {
   const listings = await store.getListings();
@@ -73,7 +76,7 @@ router.post(
 
     // console.log(listing)
 
-    newListing= await store.addListing(listing);
+    newListing = await store.addListing(listing);
 
     res.status(201).send(newListing);
   }
